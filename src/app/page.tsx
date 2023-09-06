@@ -8,6 +8,12 @@ const getTodo = () => {
   return prisma.todo.findMany();
 };
 
+const toggleTodo = async (id: string, complete: boolean) => {
+  "use server";
+
+  await prisma.todo.update({ where: { id }, data: { complete } });
+};
+
 export default async function Home() {
   const todos = await getTodo();
   return (
@@ -29,6 +35,7 @@ export default async function Home() {
             id={todo.id}
             complete={todo.complete}
             title={todo.title}
+            toggleTodo={toggleTodo}
           />
         ))}
       </ul>
